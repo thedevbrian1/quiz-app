@@ -1,6 +1,5 @@
 import { Form, Link, Outlet, useCatch, useLoaderData } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
-// import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Logo } from "~/components/Icon";
 import { getUserSession, storage } from "~/utils/session.server";
