@@ -11,7 +11,13 @@ function validateDifficulty(choice) {
   }
 }
 
+export function headers() {
+  return {
+    "Cache-Control": "public maxage=86400"
+  };
+}
 
+// TODO: Add caching headers
 export async function action({ request }) {
   // validation
   const formData = await request.formData();

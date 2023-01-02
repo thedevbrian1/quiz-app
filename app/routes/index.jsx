@@ -1,6 +1,12 @@
 import { Link, useCatch } from "@remix-run/react";
 import { Logo } from "../components/Icon";
 
+export function headers() {
+    return {
+        "Cache-Control": "maxage=86400 public"
+    };
+}
+
 export default function Index() {
     return (
         <main className="w-full h-screen bg-[url('/got-mobile-wallpaper.png')] lg:bg-[url('/got-desktop-wallpaper.png')] bg-center bg-cover bg-no-repeat">

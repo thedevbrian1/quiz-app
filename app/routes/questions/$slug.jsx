@@ -28,6 +28,7 @@ import { ArrowLeftIcon, Logo } from "~/components/Icon";
 // 
 
 
+//TODO: Add caching headers
 export async function loader({ request, params }) {
     const currentSlug = params.slug;
 
@@ -63,7 +64,11 @@ export async function loader({ request, params }) {
         return json({ question: question.result, numberOfQuestions, unseenQuestions, userChoice });
     }
 
-    return json({ question: question.result, numberOfQuestions, unseenQuestions });
+    return json({ question: question.result, numberOfQuestions, unseenQuestions }, {
+        headers: {
+            "Cache-Control": "private maxage=86400"
+        }
+    });
 }
 
 export async function action({ request, params }) {
