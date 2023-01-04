@@ -1,6 +1,6 @@
-import { useLoaderData, Form, Link, useNavigate, useTransition, useCatch, useLocation } from "@remix-run/react";
+import { useLoaderData, Form, Link, useNavigate, useTransition, useCatch, useLocation, useParams } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 //import { getClient } from "~/lib/sanity/getClient";
 import { getUserSession, storage } from "~/utils/session.server";
 import { ArrowLeftIcon, Logo } from "~/components/Icon";
@@ -28,7 +28,7 @@ import { ArrowLeftIcon, Logo } from "~/components/Icon";
 // 
 
 
-//TODO: Add caching headers
+
 export async function loader({ request, params }) {
     const currentSlug = params.slug;
 
@@ -129,10 +129,13 @@ export default function Question() {
     const { question, numberOfQuestions, unseenQuestions, userChoice } = useLoaderData();
 
     const transition = useTransition();
+    const params = useParams();
+    const currentSlug = params.slug;
+
     const formRef = useRef(null);
 
-    const [checkedState, setCheckedState] = useState(userChoice?.choice);
-
+    const [checkedState, setCheckedState] = useState(null);
+    console.log({ checkedState });
     // const navigate = useNavigate();
 
     // useEffect(() => {
@@ -148,12 +151,19 @@ export default function Question() {
             </div>
             <div className="bg-[#FF512F] blur-[140px] bg-opacity-50 w-72 h-72 absolute -z-10 top-56 right-1/2 rounded-full" />
             <p className="text-3xl mt-16">{question[0].question}</p>
-            <Form method="post" className="flex flex-col mt-3" ref={formRef}>
+            <Form method="post" className="flex flex-col mt-3" ref={formRef} key={question[0]._id}>
                 <input type="hidden" value={question[0]._id} name="questionId" />
                 <div>
                     {question[0].choices.map((choice, index) => (
                         <div key={index}>
-                            <input
+                            <RadioInput
+                                choice={choice}
+                                index={index}
+                                checkedState={checkedState}
+                                setCheckedState={setCheckedState}
+                                userChoice={userChoice?.userChoice}
+                            />
+                            {/* <input
                                 type="radio"
                                 name="choice"
                                 value={choice}
@@ -163,7 +173,7 @@ export default function Question() {
                             // autoComplete={false}
                             // defaultChecked={ }
                             // Use the value of the choice stored in the session as the selected value
-                            />{" "}
+                            />{" "} */}{" "}
                             <label htmlFor={index} className="ml-2 text-lg">{choice}</label>
                         </div>
 
@@ -179,6 +189,20 @@ export default function Question() {
                 <ArrowLeftIcon /> <Link to="/difficulty" className="hover:underline">Choose difficulty</Link>
             </div>
         </main>
+    );
+}
+
+function RadioInput({ choice, index, checkedState, setCheckedState, userChoice }) {
+    const id = useId();
+    return (
+        <input
+            type="radio"
+            name="choice"
+            value={choice}
+            id={index}
+            checked={(checkedState === id) || (userChoice === choice)}
+            onChange={(e) => setCheckedState(id)}
+        />
     );
 }
 

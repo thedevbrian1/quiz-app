@@ -17,7 +17,7 @@ export function headers() {
   };
 }
 
-// TODO: Add caching headers
+
 export async function action({ request }) {
   // validation
   const formData = await request.formData();
