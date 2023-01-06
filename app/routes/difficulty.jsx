@@ -57,16 +57,27 @@ export async function action({ request }) {
     });
   }
 
-  const numberOfQuestions = fetchedSlugs.result.length;
+  let firstTen = [];
+
+  for (let index = 0; index < 10; index++) {
+    let randomIndex = Math.floor(Math.random() * fetchedSlugs.result.length);
+    firstTen.push(fetchedSlugs.result[randomIndex]);
+    fetchedSlugs.result.splice(randomIndex, 1);
+
+  }
+
+  const numberOfQuestions = firstTen.length;
   session.set('numberOfQuestions', numberOfQuestions);
 
-  let slugIndex = Math.floor(Math.random() * fetchedSlugs.result.length);
-  const firstQuestion = fetchedSlugs.result[slugIndex];
+  let slugIndex = Math.floor(Math.random() * firstTen.length);
+  const firstQuestion = firstTen[slugIndex];
 
   const userQuestionsArray = [];
+  const attemptedSlugsArray = [];
 
-  session.set("slugs", fetchedSlugs.result);
+  session.set("slugs", firstTen);
   session.set("userChoices", userQuestionsArray);
+  session.set("attemptedSlugsArray", attemptedSlugsArray);
 
   return redirect(`/questions/${firstQuestion.slug.current}`, {
     headers: {

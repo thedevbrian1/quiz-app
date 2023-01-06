@@ -25,8 +25,6 @@ import { ArrowLeftIcon, Logo } from "~/components/Icon";
 //
 // Set the question and answer to session
 // Navigate to the next question
-// 
-
 
 
 export async function loader({ request, params }) {
@@ -44,29 +42,34 @@ export async function loader({ request, params }) {
         });
     }
     const session = await getUserSession(request);
+
     const numberOfQuestions = session.get('numberOfQuestions');
-
-    const slugs = session.get("slugs");
-
+    const attemptedSlugsArray = session.get('attemptedSlugsArray');
     const userChoices = session.get('userChoices');
+    const difficulty = session.get('difficulty');
 
-    const attemptedQuestionIndex = userChoices.findIndex((element) => element.userQuestionSlug === currentSlug);
-
-    let unseenQuestions;
-    if (attemptedQuestionIndex !== -1) {
-        unseenQuestions = slugs.length;
+    // This is used to set the current position in the questions e.g 1/10
+    if (attemptedSlugsArray.includes(currentSlug)) {
+        attemptedSlugsArray.pop();
     } else {
-        unseenQuestions = (slugs.length) - 1;
+        attemptedSlugsArray.push(currentSlug);
     }
+
+    session.set("attemptedSlugsArray", attemptedSlugsArray);
 
     const userChoice = userChoices.find((element) => element.userQuestionSlug === currentSlug);
     if (userChoice) {
-        return json({ question: question.result, numberOfQuestions, unseenQuestions, userChoice });
+        return json({ question: question.result, numberOfQuestions, userChoice, attemptedSlugsArray, difficulty }, {
+            headers: {
+                "Set-Cookie": await storage.commitSession(session)
+            }
+        });
     }
 
-    return json({ question: question.result, numberOfQuestions, unseenQuestions }, {
+    return json({ question: question.result, numberOfQuestions, attemptedSlugsArray, difficulty }, {
         headers: {
-            "Cache-Control": "private maxage=86400"
+            "Cache-Control": "private maxage=86400",
+            "Set-Cookie": await storage.commitSession(session)
         }
     });
 }
@@ -126,23 +129,14 @@ export async function action({ request, params }) {
 }
 
 export default function Question() {
-    const { question, numberOfQuestions, unseenQuestions, userChoice } = useLoaderData();
+    const { question, numberOfQuestions, userChoice, attemptedSlugsArray, difficulty } = useLoaderData();
 
     const transition = useTransition();
-    const params = useParams();
-    const currentSlug = params.slug;
 
     const formRef = useRef(null);
 
     const [checkedState, setCheckedState] = useState(null);
-    console.log({ checkedState });
-    // const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (transition.submission) {
-    //         formRef.current?.reset();
-    //     }
-    // }, [transition.submission]);
 
     return (
         <main className="px-8 sm:px-0 sm:w-4/5 xl:max-w-4xl mx-auto">
@@ -184,10 +178,11 @@ export default function Question() {
                     {transition.submission ? 'Processing...' : 'Next'}
                 </button>
             </Form>
-            <span className="flex justify-center mt-4">{numberOfQuestions - unseenQuestions} / {numberOfQuestions}</span>
+            <span className="flex justify-center mt-4">{attemptedSlugsArray.length} / {numberOfQuestions}</span>
             <div className="mt-8 flex gap-2">
                 <ArrowLeftIcon /> <Link to="/difficulty" className="hover:underline">Choose difficulty</Link>
             </div>
+            <span className="text-gray-700 italic">Current difficulty level: <span className="font-semibold">{difficulty}</span></span>
         </main>
     );
 }
