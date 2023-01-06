@@ -1,13 +1,16 @@
-import { Link, useCatch } from "@remix-run/react";
+import { Link, useCatch, useTransition } from "@remix-run/react";
 import { Logo } from "../components/Icon";
 
 export function headers() {
+    //TODO: Increase caching time to at least a week after design is complete
     return {
         "Cache-Control": "maxage=86400 public"
     };
 }
 
 export default function Index() {
+    const transition = useTransition();
+
     return (
         <main className="w-full h-screen bg-[url('/got-mobile-wallpaper.png')] lg:bg-[url('/got-desktop-wallpaper.png')] bg-center bg-cover bg-no-repeat">
             <div className="px-8 sm:px-0 sm:w-4/5 mx-auto pt-8 h-full ">
@@ -18,7 +21,7 @@ export default function Index() {
                     <p className="text-white text-center text-2xl md:text-3xl lg:text-4xl landscape:mt-16">How well do you know Game of Thrones?</p>
                     <div className="flex mt-4 lg:mt-8 justify-center">
                         <Link to="/difficulty" className="px-16 py-3  bg-gradient-to-b from-[#FF512F] to-[#F09819] text-white">
-                            Start quiz
+                            {transition.state === 'loading' ? 'Processing...' : 'Start quiz'}
                         </Link>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 //import { getClient } from "~/lib/sanity/getClient";
 import { getUserSession, storage } from "~/utils/session.server";
 import { ArrowLeftIcon, Logo } from "~/components/Icon";
+import Spinner from "~/components/Spinner";
 
 // Should I use useMatches instead?????🤔🤔
 //
@@ -174,8 +175,9 @@ export default function Question() {
                     ))}
                 </div>
                 {/* <button type="button" onClick={() => navigate(-1)}>Prev</button> */}
-                <button type="submit" className="py-3 w-36 mt-4 bg-black text-white">
-                    {transition.submission ? 'Processing...' : 'Next'}
+                <button type="submit" className={`relative grid place-content-center h-12 w-36 mt-4 bg-black text-white ${transition.submission ? 'pl-3' : ''}`}>
+                    {transition.submission ? <Spinner /> : 'Next'}
+                    {/* <Spinner /> */}
                 </button>
             </Form>
             <span className="flex justify-center mt-4">{attemptedSlugsArray.length} / {numberOfQuestions}</span>

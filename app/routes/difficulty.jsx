@@ -3,6 +3,7 @@ import { redirect } from "@remix-run/node";
 import badRequest from "~/utils/badRequest";
 import { getUserSession, storage } from "~/utils/session.server";
 import { Logo } from "~/components/Icon";
+import Spinner from "~/components/Spinner";
 
 
 function validateDifficulty(choice) {
@@ -128,7 +129,9 @@ export default function Difficulty() {
           {actionData?.difficultyFieldError?.name
             ? (<span className="text-red-500">{actionData.difficultyFieldError.name}</span>)
             : null}
-          <button className=" py-3 w-32 mt-4  bg-gradient-to-b from-[#FF512F] to-[#F09819] text-black">{transition.submission ? 'Loading...' : 'Continue'}</button>
+          <button className={`h-12 w-32 mt-4  grid place-items-center bg-gradient-to-b from-[#FF512F] to-[#F09819] text-black ${transition.submission ? 'pl-3' : ''}`}>
+            {transition.submission ? <Spinner /> : 'Continue'}
+          </button>
         </Form>
       </div>
     </main>
