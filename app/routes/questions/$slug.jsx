@@ -163,6 +163,7 @@ export default function Question() {
                         colors={['#16a34a', '#F7B801', '#dbb239', '#FF5349']}
                         colorsTime={[timerDuration, 0.4 * timerDuration, 0.75 * timerDuration, 0]}
                         size={100}
+                        strokeWidth={6}
                         onComplete={handleSubmit}
                     >
                         {({ remainingTime }) => remainingTime}
