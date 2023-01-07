@@ -529,14 +529,6 @@ video {
   right: 50%;
 }
 
-.right-0 {
-  right: 0px;
-}
-
-.top-\[6px\] {
-  top: 6px;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -549,6 +541,14 @@ video {
 .my-3 {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
 }
 
 .mt-\[35vh\] {
@@ -591,16 +591,12 @@ video {
   margin-top: 2rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
-}
-
-.-ml-1 {
-  margin-left: -0.25rem;
-}
-
-.mr-3 {
-  margin-right: 0.75rem;
 }
 
 .block {
@@ -651,6 +647,10 @@ video {
   height: auto;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-full {
   height: 100%;
 }
@@ -669,22 +669,6 @@ video {
 
 .h-72 {
   height: 18rem;
-}
-
-.h-8 {
-  height: 2rem;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-14 {
-  height: 3.5rem;
-}
-
-.h-12 {
-  height: 3rem;
 }
 
 .w-6 {
@@ -943,6 +927,10 @@ video {
   padding-top: 4rem;
 }
 
+.pl-3 {
+  padding-left: 0.75rem;
+}
+
 .pt-8 {
   padding-top: 2rem;
 }
@@ -957,14 +945,6 @@ video {
 
 .pb-16 {
   padding-bottom: 4rem;
-}
-
-.pl-2 {
-  padding-left: 0.5rem;
-}
-
-.pl-3 {
-  padding-left: 0.75rem;
 }
 
 .text-center {
@@ -1144,16 +1124,16 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+.transition-opacity {
+  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
 
-.transition-opacity {
-  transition-property: opacity;
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }

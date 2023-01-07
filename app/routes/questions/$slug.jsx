@@ -1,7 +1,7 @@
-import { useLoaderData, Form, Link, useNavigate, useTransition, useCatch, useLocation, useParams } from "@remix-run/react";
+import { useLoaderData, Form, Link, useTransition, useCatch, useSubmit } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import { useEffect, useId, useRef, useState } from "react";
-//import { getClient } from "~/lib/sanity/getClient";
+import { useId, useRef, useState } from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { getUserSession, storage } from "~/utils/session.server";
 import { ArrowLeftIcon, Logo } from "~/components/Icon";
 import Spinner from "~/components/Spinner";
@@ -134,10 +134,20 @@ export default function Question() {
 
     const transition = useTransition();
 
+    const submit = useSubmit();
+
     const formRef = useRef(null);
 
     const [checkedState, setCheckedState] = useState(null);
 
+    const timerDuration = difficulty === 'Easy' ? 40 : difficulty === 'Intermediate' ? 30 : 20;
+
+
+    function handleSubmit() {
+        submit({
+            questionId: question[0]._id,
+        }, { method: 'post' });
+    }
 
     return (
         <main className="px-8 sm:px-0 sm:w-4/5 xl:max-w-4xl mx-auto">
@@ -145,10 +155,22 @@ export default function Question() {
                 <Logo />
             </div>
             <div className="bg-[#FF512F] blur-[140px] bg-opacity-50 w-72 h-72 absolute -z-10 top-56 right-1/2 rounded-full" />
-            <p className="text-3xl mt-16">{question[0].question}</p>
-            <Form method="post" className="flex flex-col mt-3" ref={formRef} key={question[0]._id}>
+            <Form method="post" className="flex flex-col" ref={formRef} key={question[0]._id}>
+                <div className="mt-10">
+                    <CountdownCircleTimer
+                        isPlaying
+                        duration={timerDuration}
+                        colors={['#16a34a', '#F7B801', '#dbb239', '#FF5349']}
+                        colorsTime={[timerDuration, 0.4 * timerDuration, 0.75 * timerDuration, 0]}
+                        size={100}
+                        onComplete={handleSubmit}
+                    >
+                        {({ remainingTime }) => remainingTime}
+                    </CountdownCircleTimer>
+                </div>
+                <p className="text-3xl mt-10 ">{question[0].question}</p>
                 <input type="hidden" value={question[0]._id} name="questionId" />
-                <div>
+                <div className="mt-3">
                     {question[0].choices.map((choice, index) => (
                         <div key={index}>
                             <RadioInput
@@ -158,17 +180,7 @@ export default function Question() {
                                 setCheckedState={setCheckedState}
                                 userChoice={userChoice?.userChoice}
                             />
-                            {/* <input
-                                type="radio"
-                                name="choice"
-                                value={choice}
-                                id={index}
-                                checked={checkedState === choice}
-                                onChange={(e) => setCheckedState(e.target.value)}
-                            // autoComplete={false}
-                            // defaultChecked={ }
-                            // Use the value of the choice stored in the session as the selected value
-                            />{" "} */}{" "}
+                            {" "}
                             <label htmlFor={index} className="ml-2 text-lg">{choice}</label>
                         </div>
 
@@ -177,7 +189,6 @@ export default function Question() {
                 {/* <button type="button" onClick={() => navigate(-1)}>Prev</button> */}
                 <button type="submit" className={`relative grid place-content-center h-12 w-36 mt-4 bg-black text-white ${transition.submission ? 'pl-3' : ''}`}>
                     {transition.submission ? <Spinner /> : 'Next'}
-                    {/* <Spinner /> */}
                 </button>
             </Form>
             <span className="flex justify-center mt-4">{attemptedSlugsArray.length} / {numberOfQuestions}</span>
