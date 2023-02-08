@@ -1,5 +1,10 @@
 # Game of Thrones quiz app
-(https://got-quiz-app.netlify.app/)
+[Click here to open the app](https://got-quiz-app.netlify.app/)
+
+This app was built with:
+- [Remix](https://remix.run/docs)
+- [Netlify](https://www.netlify.com/)
+- [Sanity](https://www.sanity.io/)
 
 <!-- # Welcome to Remix!
 
