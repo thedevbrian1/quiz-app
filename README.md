@@ -1,4 +1,7 @@
-# Welcome to Remix!
+# Game of Thrones quiz app
+(https://got-quiz-app.netlify.app/)
+
+<!-- # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
 - [Netlify Functions](https://www.netlify.com/products/functions/)
@@ -59,4 +62,4 @@ netlify deploy --build
 
 # production deployment
 netlify deploy --build --prod
-```
+``` -->
